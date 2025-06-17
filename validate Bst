@@ -1,0 +1,62 @@
+import java.util.*;
+
+class TreeNode {
+    int val;
+    TreeNode left, right;
+    TreeNode(int x) {
+        val = x;
+    }
+}
+
+public class ValidateBST {
+    
+    // Build tree from level order array
+    public TreeNode buildTree(Integer[] arr) {
+        if (arr.length == 0 || arr[0] == null) return null;
+
+        TreeNode root = new TreeNode(arr[0]);
+        Queue<TreeNode> queue = new LinkedList<>();
+        queue.add(root);
+        int i = 1;
+
+        while (!queue.isEmpty() && i < arr.length) {
+            TreeNode curr = queue.poll();
+
+            if (i < arr.length && arr[i] != null) {
+                curr.left = new TreeNode(arr[i]);
+                queue.add(curr.left);
+            }
+            i++;
+
+            if (i < arr.length && arr[i] != null) {
+                curr.right = new TreeNode(arr[i]);
+                queue.add(curr.right);
+            }
+            i++;
+        }
+
+        return root;
+    }
+
+    // Check if valid BST
+    public boolean isValidBST(TreeNode root) {
+        return isValid(root, Long.MIN_VALUE, Long.MAX_VALUE);
+    }
+
+    private boolean isValid(TreeNode node, long min, long max) {
+        if (node == null) return true;
+        if (node.val <= min || node.val >= max) return false;
+
+        return isValid(node.left, min, node.val) &&
+               isValid(node.right, node.val, max);
+    }
+
+    public static void main(String[] args) {
+        ValidateBST tree = new ValidateBST();
+
+        Integer[] arr = {10, 5, 15, 3, 7, 12, 18}; // Level-order input
+        TreeNode root = tree.buildTree(arr);
+
+        System.out.println("Is valid BST? " + tree.isValidBST(root)); // Output: true
+    }
+}

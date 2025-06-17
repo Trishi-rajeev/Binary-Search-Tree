@@ -1,0 +1,50 @@
+class TreeNode {
+    int val;
+    TreeNode left, right;
+
+    TreeNode(int x) {
+        val = x;
+        left = right = null;
+    }
+}
+
+public class BST {
+    // Insert a value into BST
+    public TreeNode insert(TreeNode root, int val) {
+        if (root == null) return new TreeNode(val);
+
+        if (val < root.val)
+            root.left = insert(root.left, val);
+        else
+            root.right = insert(root.right, val);
+
+        return root;
+    }
+
+    // Create BST from array
+    public TreeNode constructBST(int[] arr) {
+        TreeNode root = null;
+        for (int val : arr)
+            root = insert(root, val);
+        return root;
+    }
+
+    // Inorder Traversal
+    public void inorder(TreeNode root) {
+        if (root != null) {
+            inorder(root.left);
+            System.out.print(root.val + " ");
+            inorder(root.right);
+        }
+    }
+
+    public static void main(String[] args) {
+        BST tree = new BST();
+        int[] arr = {10, 5, 15, 3, 7, 12, 18};
+
+        TreeNode root = tree.constructBST(arr);
+
+        System.out.print("Inorder Traversal of BST: ");
+        tree.inorder(root); // Output will be sorted: 3 5 7 10 12 15 18
+    }
+}
